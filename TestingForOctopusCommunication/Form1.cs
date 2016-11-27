@@ -566,7 +566,7 @@ namespace TestingForOctopusCommunication
                 case 100016:
                     return "讀卡錯誤，請重試";
                 case 100017:
-                    return "Card write error";
+                    return "讀卡錯誤，請重試";
                 case 100101:
                     return "Failed to create AR (SaveLog)";
                 case 100102:
@@ -608,7 +608,7 @@ namespace TestingForOctopusCommunication
                 case 100056:
                     return "The calling sequence of DeferDeduct is wrong";
                 case 100066:
-                    return "POS system time is invalid";
+                    return "System time error ";
                 default:
                     return "發生錯誤(編號 " + communicateStatus + ")";
 
@@ -1067,7 +1067,7 @@ namespace TestingForOctopusCommunication
                             if (PollStatus < 100000) //if poll first do not have error
                             {
 
-                                string cardId = PollData.ToString().Substring(0, 8);
+                                string cardId = PollData.ToString().Substring(0, 10);
                                 log.Info(string.Format("Sucessful Poll..Balance {0} CardID {1}",
                                     (Convert.ToDecimal(PollStatus) / 10).ToString("#,##.0"), cardId));
                             Deduct:
@@ -1153,7 +1153,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                                                         if (PollStatus2 < 100000) //Normal poll not the same card
                                                         {
                                                             var TxnAmtStatus2 = OctDisplayPayAmount(OctValue);
-                                                            string cardId2 = PollData2.ToString().Substring(0, 8);
+                                                            string cardId2 = PollData2.ToString().Substring(0, 10);
                                                             if (cardId == cardId2)
                                                             {
                                                                 log.Info("***1000222 Same Card Found****");
