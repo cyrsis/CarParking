@@ -341,8 +341,10 @@ namespace TestingForOctopusCommunication
 
         private void button6_Click(object sender, EventArgs e)
         {
+            StringBuilder PollData = new StringBuilder(256);
+            int PollStatus = OctopusLibrary.Poll(0, 200, PollData);
             char[] transactionCode = { '0', '0', '1', '2', '3', '4', '0', '0', '0', '0', '0', '0' };
-            int result = OctopusLibrary.AddValue(10000, 1, transactionCode);
+            int result = OctopusLibrary.AddValue(1000, 1, transactionCode);
         }
 
 
@@ -744,8 +746,16 @@ namespace TestingForOctopusCommunication
                 sqlResultTextBox.Text += DateTime.Now + "---XFile  Genereated Sucessfully----" + Environment.NewLine;
                 log.Info("---XFile  Genereated Sucessfully----");
 
+                log.Info("Hose Keeping call");
+                var housekeepingstatus = OctopusLibrary.HouseKeeping();
+                sqlResultTextBox.Text += DateTime.Now + "House keeping Call Status" + GetErrorMessage(housekeepingstatus);
+                log.Info("Hose Keeping call status" + housekeepingstatus);
+
+
                 sqlResultTextBox.Text += DateTime.Now + "---Checking Internet Connection--" + Environment.NewLine;
                 log.Info(DateTime.Now+"---Checking Internet Connection---");
+
+
 
                 HttpWebRequest req;
                 HttpWebResponse resp;
@@ -904,11 +914,7 @@ namespace TestingForOctopusCommunication
 
             //#endregion
 
-            log.Info("Hose Keeping call");
-           // var housekeepingstatus = OctopusLibrary.HouseKeeping();
-            //sqlResultTextBox.Text += DateTime.Now + "House keeping Call Status" + GetErrorMessage(housekeepingstatus);
-            //log.Info("Hose Keeping call status" +housekeepingstatus);
-
+            
             
           //  sqlResultTextBox.Clear();
             OctopousIdleDisplay();
@@ -1407,6 +1413,12 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                                     string deviceID2 = string.Format("{0:x}", DevVerRec.DevID).ToUpper();
                                     //var deviceID = device_struct.GetType().GetField("DevID");
 
+                                    byte[] GetExtraInfo = new byte[512];
+                                    int GetExtraStatus = OctopusLibrary.GetExtraInfo(0, 1, GetExtraInfo);
+                                    string lastAdd=System.Text.Encoding.UTF8.GetString(GetExtraInfo);
+
+                                    string ReceiptAddmessage=BuildLastAddMessage(lastAdd);
+
                                     log.Info("----Normal SQL Updated----");
                                     var sql = new SqlClient();
                                     
@@ -1624,6 +1636,33 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
             }
         }
 
+        private string BuildLastAddMessage(string lastAdd)
+        {
+            //sample "2008-9-22,4,40FF1A
+            // Only Print cash 1, aavs 4, online 5
+            string[] message = lastAdd.Split(",");
+            if (message[1].ToInt32()==1||message[1].ToInt32()==4||message.ToInt32()==5)
+            {
+               string typeOfValueAdd;
+               if(message[1].ToInt32()==1)
+               {
+                   typeOfValueAdd="現金增值";
+               }
+                else if(message[1].ToInt32()==4)
+                {
+                    typeOfValueAdd="自動增值";
+                }
+                else if(message[1].ToInt32()==5)
+                {
+                    typeOfValueAdd="網上增值";
+                }
+
+
+               return "上一次於" + message[0] + typeOfValueAdd;
+            }
+            return null;
+        }
+
 
         private void FormCancelAndMinimize()
         {
@@ -1695,8 +1734,14 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
             StringBuilder PollData = new StringBuilder(512);
             PollStatus4 = OctopusLibrary.Poll(2, 100, PollData);
             if (PollStatus4 < 100000)
-            {
+            {  
+
+               byte[] GetExtraInfo = new byte[512];
+                int GetExtraStatus = OctopusLibrary.GetExtraInfo(0, 1,GetExtraInfo);
+               //string GetInf= new string(GetExtraInfo);
                 log.Info("----- Standard Card Enquiry-----");
+                log.Info("----- Last Add Values----- \n");
+                log.Info(System.Text.Encoding.UTF8.GetString(GetExtraInfo));
                 string cardId = PollData.ToString().Substring(0, 8);
                 log.Info("Data  :" + PollData);
 
@@ -1846,6 +1891,14 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
             string curFile = "error.txt";
             MessageBox.Show(File.Exists(curFile) ? "File exists." : "File does not exist.");
 
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            //byte[] GetExtraInfo = new byte[512];
+            //int GetExtraStatus = OctopusLibrary.GetExtraInfo(0,1,GetExtraInfo);
+
+           // MessageBox.Show(GetExtraInfo.ToString());
         }
     }
 

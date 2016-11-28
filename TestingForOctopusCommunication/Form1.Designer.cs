@@ -42,6 +42,8 @@ namespace TestingForOctopusCommunication
             this.StartServieBtn = new System.Windows.Forms.Button();
             this.StopServicebtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.CardEnquirybtn = new System.Windows.Forms.Button();
@@ -50,7 +52,7 @@ namespace TestingForOctopusCommunication
             this.Status = new System.Windows.Forms.TabControl();
             this.sqlResultTextBox = new System.Windows.Forms.RichTextBox();
             this.DisplayTxtbox = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -103,6 +105,8 @@ namespace TestingForOctopusCommunication
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.button10);
             this.tabPage2.Location = new System.Drawing.Point(4, 37);
@@ -112,6 +116,26 @@ namespace TestingForOctopusCommunication
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "特別功能";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(19, 224);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(344, 56);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "GetExtraInfo";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(19, 36);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(336, 50);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "XFile +  Network Check";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.XfileSFTP_Click);
             // 
             // button10
             // 
@@ -202,15 +226,15 @@ namespace TestingForOctopusCommunication
             this.DisplayTxtbox.TabIndex = 22;
             this.DisplayTxtbox.Text = "";
             // 
-            // button1
+            // button3
             // 
-            this.button1.Location = new System.Drawing.Point(19, 36);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(336, 50);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "XFile +  Network Check";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.XfileSFTP_Click);
+            this.button3.Location = new System.Drawing.Point(72, 351);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(341, 78);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
@@ -250,6 +274,8 @@ namespace TestingForOctopusCommunication
         private RichTextBox sqlResultTextBox;
         private RichTextBox DisplayTxtbox;
         private Button button1;
+        private Button button2;
+        private Button button3;
     }
 }
 
