@@ -7,7 +7,7 @@ namespace TestingForOctopusCommunication
 {
     public class SqlClient
     {
-        public void SucessfulTransaactionUpdate(string deviceID2, string cardID, int balance, int PollStatus,DateTime transDatetime)
+        public void SucessfulTransaactionUpdate(string deviceID2, string cardID, int balance, int PollStatus, DateTime transDatetime, String ReceiptAddmessage)
             //Update SQL with Checking on balance
         {
             try
@@ -27,8 +27,8 @@ namespace TestingForOctopusCommunication
                         command.CommandTimeout = 80;
                         command.CommandType = CommandType.Text;
                         command.CommandText ="UPDATE HOUR_PARK_OCTOPUS SET DEVICE_ID= '" + deviceID2 + "', OCTOPUS_CARD_NO='" + cardID +
-                            "', REMAIN_VALUE=" + (Convert.ToDecimal(balance)/10).ToString("#,##.0") +
-                            ", TRANS_DATE_TIME='"+transDatetime.ToString("yyyyMMddHHmmss")+"',TRANS_NO='12345', STATUS_ID = 1 WHERE STATUS_ID = 2";
+                            "', REMAIN_VALUE=" + (Convert.ToDecimal(balance) / 10).ToString("#,##.0") + ", ADD_VALUE_MSG='" + ReceiptAddmessage +
+                            "', TRANS_DATE_TIME='"+transDatetime.ToString("yyyyMMddHHmmss")+"',TRANS_NO='12345', STATUS_ID = 1 WHERE STATUS_ID = 2";
                         Form1.log.Info("SQL Statment "+command.CommandText);
                         command.ExecuteNonQuery();
                     }

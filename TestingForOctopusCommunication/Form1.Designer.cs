@@ -75,10 +75,10 @@ namespace TestingForOctopusCommunication
             // 
             this.tabPage3.Controls.Add(this.StartServieBtn);
             this.tabPage3.Controls.Add(this.StopServicebtn);
-            this.tabPage3.Location = new System.Drawing.Point(4, 37);
+            this.tabPage3.Location = new System.Drawing.Point(4, 51);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(442, 576);
+            this.tabPage3.Size = new System.Drawing.Size(442, 562);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "工程師應用";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -109,10 +109,10 @@ namespace TestingForOctopusCommunication
             this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.button10);
-            this.tabPage2.Location = new System.Drawing.Point(4, 37);
+            this.tabPage2.Location = new System.Drawing.Point(4, 51);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(442, 576);
+            this.tabPage2.Size = new System.Drawing.Size(442, 562);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "特別功能";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -153,10 +153,10 @@ namespace TestingForOctopusCommunication
             this.tabPage1.Controls.Add(this.OctGUIGoBack);
             this.tabPage1.Controls.Add(this.OctPressPoll);
             this.tabPage1.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tabPage1.Location = new System.Drawing.Point(4, 37);
+            this.tabPage1.Location = new System.Drawing.Point(4, 51);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(442, 576);
+            this.tabPage1.Size = new System.Drawing.Size(442, 562);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "日常應用";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -228,13 +228,13 @@ namespace TestingForOctopusCommunication
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(72, 351);
+            this.button3.Location = new System.Drawing.Point(19, 339);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(341, 78);
+            this.button3.Size = new System.Drawing.Size(344, 57);
             this.button3.TabIndex = 14;
-            this.button3.Text = "button3";
+            this.button3.Text = "BlackListOutdate";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button6_Click);
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // Form1
             // 

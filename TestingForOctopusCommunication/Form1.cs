@@ -214,6 +214,8 @@ namespace TestingForOctopusCommunication
                             {
                                 log.Info("Enable Transaction");
                                 OctGUINormalState();
+                                
+                                
                             }
 
                             #region PayAmountOver900
@@ -374,7 +376,48 @@ namespace TestingForOctopusCommunication
         FirstCommunication:
 
             int formloadCommunicateStatus = CheckQctopusConnection();    //
-            //int formloadCommunicateStatus = 0;                  //For Debug
+            //int formloadCommunicateStatus = 0;   
+            //For Debug
+
+            string status = CallGetSysInfo();
+            if (status.ToInt32() == 0)
+            {
+                using (Form newForm = new Form()) //Normal MessgeBox
+                {
+                    //MessageBeep(0 /*MB_OK*/);
+                    newForm.TopMost = true;
+                    newForm.Activate();
+
+                    MessageBoxEx msgBox = MessageBoxExManager.CreateMessageBox(null);
+                    msgBox.AddButtons(MessageBoxButtons.OK);
+
+                    msgBox.Caption = "";
+                    msgBox.Text = "黑名單過期，請聯絡技術 \n    支援。 ";
+
+                    //msgBox.Timeout = 10000;
+                    //msgBox.TimeoutResult = TimeoutResult.Timeout;
+
+                    msgBox.Icon = MessageBoxExIcon.Warning;
+
+                    msgBox.Font = new Font("Microsoft YaHei", 10);
+
+                    var result = msgBox.Show(newForm);
+
+                    switch (result)
+                    {
+                        case MessageBoxExResult.Ok:
+                            {
+
+
+
+                            }
+
+
+                            break;
+                    }
+
+                }
+            }
             DataLayer.Db.ApplicationName = "Win Octopus Reader";
             DataLayer.Db.ConnectionTimeout = 900000000;
 
@@ -1116,9 +1159,11 @@ namespace TestingForOctopusCommunication
                                
                                 //char[] additionalInformationForTransaction = InvoiceNuberForAI.ToCharArray();;
                             byte[] additionalInformationForTransaction = ASCIIEncoding.ASCII.GetBytes(InvoiceNuberForAI);
+                               
 
                                Array.Resize(ref additionalInformationForTransaction,7);// double ensure that is 7bytes array
-
+                               additionalInformationForTransaction[5] = 0x01;
+                               additionalInformationForTransaction[6] = 0x01;
                                 //additionalInformationForTransaction[0] = Convert.ToChar(Convert.ToInt16(InvoiceNuberForAI.Substring(InvoiceNuberForAI.Length- 4, 1)) * 16 + Convert.ToInt16(InvoiceNuberForAI.Substring(InvoiceNuberForAI.Length-3, 1)));
                                 //additionalInformationForTransaction[1] = Convert.ToChar(Convert.ToInt16(InvoiceNuberForAI.Substring(InvoiceNuberForAI.Length- 2, 1)) * 16 + Convert.ToInt16(InvoiceNuberForAI.Substring(InvoiceNuberForAI.Length-1, 1)));
                                // additionalInformationForTransaction[4] = Convert.ToChar(Convert.ToInt16(InvoiceNuberForAI.Substring(4, 1)) * 16 + Convert.ToInt16(InvoiceNuberForAI.Substring(5, 1)));
@@ -1416,13 +1461,15 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                                     byte[] GetExtraInfo = new byte[512];
                                     int GetExtraStatus = OctopusLibrary.GetExtraInfo(0, 1, GetExtraInfo);
                                     string lastAdd=System.Text.Encoding.UTF8.GetString(GetExtraInfo);
-
-                                    string ReceiptAddmessage=BuildLastAddMessage(lastAdd);
-
+                                    string ReceiptAddmessage = null;
+                                    if (lastAdd.IsNotNullOrEmpty())
+                                    {
+                                        ReceiptAddmessage = BuildLastAddMessage(lastAdd);
+                                    }
                                     log.Info("----Normal SQL Updated----");
                                     var sql = new SqlClient();
-                                    
-                                    sql.SucessfulTransaactionUpdate(deviceID2, cardId, balance, PollStatus,TransDataTime);
+
+                                    sql.SucessfulTransaactionUpdate(deviceID2, cardId, balance, PollStatus, TransDataTime, ReceiptAddmessage);
                                     log.Info("----Normal SQL Finishe----");
 
                                     DisplayTxtbox.BackColor = Color.LightBlue;
@@ -1643,7 +1690,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
             string[] message = lastAdd.Split(",");
             if (message[1].ToInt32()==1||message[1].ToInt32()==4||message.ToInt32()==5)
             {
-               string typeOfValueAdd;
+               string typeOfValueAdd = null;
                if(message[1].ToInt32()==1)
                {
                    typeOfValueAdd="現金增值";
@@ -1658,7 +1705,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                 }
 
 
-               return "上一次於" + message[0] + typeOfValueAdd;
+               return "上一次於" + message[0] + typeOfValueAdd.ToString();
             }
             return null;
         }
@@ -1899,6 +1946,24 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
             //int GetExtraStatus = OctopusLibrary.GetExtraInfo(0,1,GetExtraInfo);
 
            // MessageBox.Show(GetExtraInfo.ToString());
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            //StringBuilder PollData = new StringBuilder(256);
+            //int PollStatus = OctopusLibrary.Poll(0, 200, PollData);
+            CallGetSysInfo();
+        }
+
+        public static String CallGetSysInfo()
+        {
+            OctopusLibrary.blcklist GetSysInfoData = new OctopusLibrary.blcklist();
+            int GetSysInfoStatus = OctopusLibrary.GetSysInfo(ref GetSysInfoData);
+            string getSysInfoData = GetSysInfoData.ToString();
+            string[] temp = getSysInfoData.Split(",");
+            log.Info("----- Get Sys Info-----");
+            log.Info("Status " + GetSysInfoStatus + " ActionListVer " + temp[0] + "  BlkUpToDate " + temp[1]);
+            return temp[1];
         }
     }
 

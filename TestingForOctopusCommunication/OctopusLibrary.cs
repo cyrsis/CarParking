@@ -39,6 +39,20 @@ namespace TestingForOctopusCommunication
             }
         }
 
+        public struct blcklist
+        {
+            public long ActionListVer;
+            public long BlkUpToDate;
+            public byte ucRes;
+
+            
+            
+            public override string ToString()
+            {
+               return string.Format(ActionListVer+","+BlkUpToDate);
+            }
+        }
+
         [DllImport("rwl.dll", EntryPoint = "_InitComm@8")] //,CharSet = CharSet.None
 
         public static extern int InitComm(byte cPort, int cBaud);
@@ -81,7 +95,11 @@ namespace TestingForOctopusCommunication
         public static extern int GetExtraInfo(int uiCom, int uiParam,byte[] ucResult);
         //GetExtraInfo Lib “rwl” Alias "_ GetExtraInfo@12" (ByVal uiCom As 
         //Long, ByVal uiParam As Long, ByVal ucResult As Long) As Long 
-        
+
+        [DllImport("rwl.dll", EntryPoint = "_GetSysInfo@4")]
+        public static extern int GetSysInfo(ref blcklist SystemLog);
+        //GetExtraInfo Lib “rwl” Alias "_ GetExtraInfo@12" (ByVal uiCom As 
+        //Long, ByVal uiParam As Long, ByVal ucResult As Long) As Long
 
 
         //This function instructs the R/W to perform a deduction transaction on
