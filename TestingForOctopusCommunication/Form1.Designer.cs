@@ -50,6 +50,7 @@ namespace TestingForOctopusCommunication
             this.Status = new System.Windows.Forms.TabControl();
             this.sqlResultTextBox = new System.Windows.Forms.RichTextBox();
             this.DisplayTxtbox = new System.Windows.Forms.RichTextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -102,6 +103,7 @@ namespace TestingForOctopusCommunication
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.button10);
             this.tabPage2.Location = new System.Drawing.Point(4, 37);
             this.tabPage2.Name = "tabPage2";
@@ -200,6 +202,16 @@ namespace TestingForOctopusCommunication
             this.DisplayTxtbox.TabIndex = 22;
             this.DisplayTxtbox.Text = "";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(19, 36);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(336, 50);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "XFile +  Network Check";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.XfileSFTP_Click);
+            // 
             // Form1
             // 
             this.AutoSize = true;
@@ -237,6 +249,7 @@ namespace TestingForOctopusCommunication
         private TabControl Status;
         private RichTextBox sqlResultTextBox;
         private RichTextBox DisplayTxtbox;
+        private Button button1;
     }
 }
 

@@ -584,7 +584,7 @@ namespace TestingForOctopusCommunication
                 case 100021:
                     return "此八達通卡或產品已失效，請聯絡港鐵客務中心";
                 case 100022:
-                    return "+++ 請勿取消交易 +++ \n 交易未能完成 請通知顧客用同一張卡 \n再次拍卡，\n 以確保交易無誤";
+                    return "+++ 請勿取消交易 +++ \n"+" \n\n  交易未能完成 \n\n "+" \n請通知顧客用同一張卡 \n"+"再次拍卡, 以確保交易"+"\n         無誤";
                 case 100023:
                     return "Transaction Log full ";
                 case 100024:
@@ -756,17 +756,20 @@ namespace TestingForOctopusCommunication
 
                     if (resp.StatusCode.ToString().Equals("OK"))
                     {
-                        log.Info(DateTime.Now + "  its connected.");
+                        log.Info(DateTime.Now + "-- Networking  its connected.");
+                        sqlResultTextBox.Text += DateTime.Now + " ---Networking its connected" + Environment.NewLine;
                         
                     }
                     else
                     {
-                        log.Info(DateTime.Now + "  its not  connected.");
+                        log.Info(DateTime.Now + " !! Networking  its not  connected.");
+                        sqlResultTextBox.Text += DateTime.Now + " !!! Networking is not connected--" + Environment.NewLine;
                     }
                 }
                 catch (Exception exc)
                 {
-                    log.Info(DateTime.Now + "  its not  connected.");
+                    sqlResultTextBox.Text += DateTime.Now + "*** Something Went Really Wrong***" + Environment.NewLine;
+                    log.Info(DateTime.Now + "*** Something Went Really Wrong****");
                 }
 
 
@@ -902,9 +905,9 @@ namespace TestingForOctopusCommunication
             //#endregion
 
             log.Info("Hose Keeping call");
-            var housekeepingstatus = OctopusLibrary.HouseKeeping();
-            sqlResultTextBox.Text += DateTime.Now + "House keeping Call Status" + GetErrorMessage(housekeepingstatus);
-            log.Info("Hose Keeping call status" +housekeepingstatus);
+           // var housekeepingstatus = OctopusLibrary.HouseKeeping();
+            //sqlResultTextBox.Text += DateTime.Now + "House keeping Call Status" + GetErrorMessage(housekeepingstatus);
+            //log.Info("Hose Keeping call status" +housekeepingstatus);
 
             
           //  sqlResultTextBox.Clear();
@@ -1095,7 +1098,7 @@ namespace TestingForOctopusCommunication
                             if (PollStatus < 100000) //if poll first do not have error
                             {
 
-                                string cardId = PollData.ToString().Substring(0, 10);
+                                string cardId = PollData.ToString().Substring(0,8);
                                 log.Info(string.Format("Sucessful Poll..Balance {0} CardID {1}",
                                     (Convert.ToDecimal(PollStatus) / 10).ToString("#,##.0"), cardId));
                             Deduct:
@@ -1160,8 +1163,8 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                                         newForm.WindowState = FormWindowState.Maximized;
                                         //newForm.Visible = true;
                                         var result = MessageBox.Show(newForm,
-                                            GetErrorMessage(balance) + "\n 八達通號碼:" + cardId,
-                                            "錯誤碼" + balance, MessageBoxButtons.OK,
+                                            GetErrorMessage(balance) + "",
+                                            "" ,MessageBoxButtons.OK,
                                             MessageBoxIcon.Error);
                                         switch (result)
                                         {
@@ -1181,7 +1184,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                                                         if (PollStatus2 < 100000) //Normal poll not the same card
                                                         {
                                                             var TxnAmtStatus2 = OctDisplayPayAmount(OctValue);
-                                                            string cardId2 = PollData2.ToString().Substring(0, 10);
+                                                            string cardId2 = PollData2.ToString().Substring(0,8);
                                                             if (cardId == cardId2)
                                                             {
                                                                 log.Info("***1000222 Same Card Found****");
@@ -1214,7 +1217,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                                                             sqlResultTextBox.Text += "發生錯誤!!!" + PollStatus2 + Environment.NewLine;
                                                             sqlResultTextBox.Text += GetErrorMessage(PollStatus2) +
                                                                                      Environment.NewLine;
-                                                            sqlResultTextBox.Text +="請重試(八達通號碼 :" + cardId + ")";
+                                                            sqlResultTextBox.Text +="";
                                                             //sqlResultTextBox.ScrollToCaret();
                                                             sqlResultTextBox.Refresh();
 
@@ -1239,7 +1242,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
 
                                                                 msgBoxError100022AfterTimeout.Caption = "八達通錯誤號碼" + balance;
                                                                 msgBoxError100022AfterTimeout.Text = GetErrorMessage(PollStatus2) +
-                                                                              "\n 請重試(八達通號碼 :" + cardId + ")";
+                                                                              "\n)";
 
                                                                 MessageBoxExButton btnRetry = new MessageBoxExButton();
                                                                 btnRetry.Text = "Retry";
@@ -1698,6 +1701,10 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                 log.Info("Data  :" + PollData);
 
                 string[] dateStrings = PollData.ToString().Split(',');
+                if (dateStrings[2].Length==10)
+                {
+                    cardId = dateStrings[2].ToString();
+                }
                 string firstRecordDateTime = dateStrings[5];
                 //DateTime convertedTime = new DateTime(DateTime.Parse(firstRecordDateTime).Ticks), DateTimeKind.UTC);
                 var startDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -1731,7 +1738,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                 something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[6])));
                 sqlResultTextBox.Text += "  1 " +something+ "         " + firstRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[4].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text += "     " + ((dateStrings[4].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;$0.0") + "       ";
                 sqlResultTextBox.Text +=
                    string.Format("{0:X}", Convert.ToInt32(dateStrings[6])) + Environment.NewLine;//working
                 //string.Format("{0:x}", DevVerRec.DevID).ToUpper()
@@ -1741,7 +1748,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
 
                 sqlResultTextBox.Text += "  2 " + something +"           " + secondRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[9].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text += "     " + ((dateStrings[9].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;$0.0") + "       ";
                 sqlResultTextBox.Text +=
                      string.Format("{0:X}", Convert.ToInt32(dateStrings[11]))+ Environment.NewLine;
                 //================================record 3=========================================================
@@ -1749,7 +1756,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                 something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[16])));
                 sqlResultTextBox.Text += "  3 " +something+ "           " + thirdRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[14].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text += "     " + ((dateStrings[14].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;$0.0") + "       ";
                 sqlResultTextBox.Text +=
                           string.Format("{0:X}", Convert.ToInt32(dateStrings[16])) + Environment.NewLine;
 
@@ -1758,7 +1765,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
                 something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[21])));
                 sqlResultTextBox.Text += "  4 " +something+ "           " + forthRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[19].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text += "     " + ((dateStrings[19].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;$0.0") + "       ";
                 sqlResultTextBox.Text += string.Format("{0:X}", Convert.ToInt32(dateStrings[21])) + Environment.NewLine;
 
                  //string.Format("{0:X}", Convert.ToInt32(dateStrings[21])) + Environment.NewLine;
