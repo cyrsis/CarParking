@@ -74,7 +74,13 @@ namespace TestingForOctopusCommunication
         [DllImport("rwl.dll", EntryPoint = "_Deduct@8")] 
         public static extern int Deduct(int deductbyCents,byte[] AdditionalInformationForTransaction);
         //int, int, char[]
+        // "_Deduct@8" (ByVal V As Long, AI As Any)   
+        //As Long 
 
+        [DllImport("rwl.dll", EntryPoint = "_GetExtraInfo@12")]
+        public static extern int GetExtraInfo(int uiCom, int uiParam,byte[] ucResult);
+        //GetExtraInfo Lib “rwl” Alias "_ GetExtraInfo@12" (ByVal uiCom As 
+        //Long, ByVal uiParam As Long, ByVal ucResult As Long) As Long 
         
 
 

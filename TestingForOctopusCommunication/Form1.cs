@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
@@ -743,6 +744,32 @@ namespace TestingForOctopusCommunication
                 sqlResultTextBox.Text += DateTime.Now + "---XFile  Genereated Sucessfully----" + Environment.NewLine;
                 log.Info("---XFile  Genereated Sucessfully----");
 
+                sqlResultTextBox.Text += DateTime.Now + "---Checking Internet Connection--" + Environment.NewLine;
+                log.Info(DateTime.Now+"---Checking Internet Connection---");
+
+                HttpWebRequest req;
+                HttpWebResponse resp;
+                try
+                {
+                    req = (HttpWebRequest)WebRequest.Create("http://www.google.com");
+                    resp = (HttpWebResponse)req.GetResponse();
+
+                    if (resp.StatusCode.ToString().Equals("OK"))
+                    {
+                        log.Info(DateTime.Now + "  its connected.");
+                        
+                    }
+                    else
+                    {
+                        log.Info(DateTime.Now + "  its not  connected.");
+                    }
+                }
+                catch (Exception exc)
+                {
+                    log.Info(DateTime.Now + "  its not  connected.");
+                }
+
+
                 sqlResultTextBox.Refresh();
                 //log.Info("File Name : " + XFileName.ToString());
                 OctGUINormalState();
@@ -1168,16 +1195,10 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
 
                                                                 sqlResultTextBox.Clear();
                                                                 sqlResultTextBox.BackColor = Color.Red;
-                                                                sqlResultTextBox.Text += "+++ 請勿取消交易 +++" +
+                                                                sqlResultTextBox.Text += "發生錯誤!!! " +
                                                                                          Environment.NewLine;
-                                                                sqlResultTextBox.Text += "  交易未能完成  " + 
-                                                                                          Environment.NewLine +
-                                                                                          "請通知顧客用同一張卡 " +
-                                                                                          Environment.NewLine+
-                                                                                          "再次拍卡，以確保交易"+
-                                                                                          Environment.NewLine+
-                                                                                          "      無誤"+ 
-                                                                                         Environment.NewLine;
+                                                                sqlResultTextBox.Text += "請重試(八達通號碼 :" + cardId +
+                                                                                         ")"+Environment.NewLine;
                                                                 sqlResultTextBox.ScrollToCaret();
                                                                 sqlResultTextBox.Refresh();
                                                                 //boxErrowNotSameCard.Caption =
@@ -1820,4 +1841,5 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
 
         }
     }
+
 }
