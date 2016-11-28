@@ -392,9 +392,10 @@ namespace TestingForOctopusCommunication
                 timer.Interval = 2000;
                 timer.Start();
 
-                XfileTimer.Interval = 7200000;    // milliseconds
-                XfileTimer.Tick += XfileSFTP_Click;
-                XfileTimer.Start();
+                //Xfile
+                //XfileTimer.Interval = 7200000;    // milliseconds
+                //XfileTimer.Tick += XfileSFTP_Click;
+                //XfileTimer.Start();
             }             
                
 
@@ -1167,10 +1168,16 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
 
                                                                 sqlResultTextBox.Clear();
                                                                 sqlResultTextBox.BackColor = Color.Red;
-                                                                sqlResultTextBox.Text += "發生錯誤!!! " +
+                                                                sqlResultTextBox.Text += "+++ 請勿取消交易 +++" +
                                                                                          Environment.NewLine;
-                                                                sqlResultTextBox.Text += "請重試(八達通號碼 :" + cardId +
-                                                                                         ")"+Environment.NewLine;
+                                                                sqlResultTextBox.Text += "  交易未能完成  " + 
+                                                                                          Environment.NewLine +
+                                                                                          "請通知顧客用同一張卡 " +
+                                                                                          Environment.NewLine+
+                                                                                          "再次拍卡，以確保交易"+
+                                                                                          Environment.NewLine+
+                                                                                          "      無誤"+ 
+                                                                                         Environment.NewLine;
                                                                 sqlResultTextBox.ScrollToCaret();
                                                                 sqlResultTextBox.Refresh();
                                                                 //boxErrowNotSameCard.Caption =
@@ -1693,52 +1700,45 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
 
                 //================================record 1=========================================================
 
-
+                                                            // String.Format("{0:+0.##;-#.##}", 0)); 
                 log.Info("Data  :" + PollData);
                 sqlResultTextBox.Text += "Octopus no. : " + cardId + Environment.NewLine;
-                sqlResultTextBox.Text += @"Octopus card Remaining Value: " +
+                sqlResultTextBox.Text += @"Octopus card Remaining Value: " +"$"+
                                          (Convert.ToDecimal(PollStatus4) / 10).ToString("#,##.0") + Environment.NewLine;
-                sqlResultTextBox.Text += " No.        Transaction  Date Time     Amount    Device ID" +
+                sqlResultTextBox.Text += " No.       Transaction  Date Time     Amount    Device ID" +
                                          Environment.NewLine;
-                sqlResultTextBox.Text += "  1" + "             " + firstRecordDateFormat.ToLocalTime().ToString() +
+                something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[6])));
+                sqlResultTextBox.Text += "  1 " +something+ "         " + firstRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[4].ToDecimal()) / 10).ToString("#,##.0") + "       ";
-                sqlResultTextBox.Text += 
-                   
-                    something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[6])))+
-
-
+                sqlResultTextBox.Text += "     $" + ((dateStrings[4].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text +=
                    string.Format("{0:X}", Convert.ToInt32(dateStrings[6])) + Environment.NewLine;//working
                 //string.Format("{0:x}", DevVerRec.DevID).ToUpper()
                 //================================record 2=========================================================
 
-                sqlResultTextBox.Text += "  2" + "             " + secondRecordDateFormat.ToLocalTime().ToString() +
+                something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[11])));
+
+                sqlResultTextBox.Text += "  2 " + something +"           " + secondRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[9].ToDecimal()) / 10).ToString("#,##.0") + "       ";
-                sqlResultTextBox.Text += 
-                    
-                     something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[11]))) +
-
-
+                sqlResultTextBox.Text += "     $" + ((dateStrings[9].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text +=
                      string.Format("{0:X}", Convert.ToInt32(dateStrings[11]))+ Environment.NewLine;
                 //================================record 3=========================================================
 
-                sqlResultTextBox.Text += "  3" + "             " + thirdRecordDateFormat.ToLocalTime().ToString() +
+                something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[16])));
+                sqlResultTextBox.Text += "  3 " +something+ "           " + thirdRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[14].ToDecimal())/10).ToString("#,##.0") + "       ";
+                sqlResultTextBox.Text += "     $" + ((dateStrings[14].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
                 sqlResultTextBox.Text +=
-                      something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[16]))) +
-
                           string.Format("{0:X}", Convert.ToInt32(dateStrings[16])) + Environment.NewLine;
 
                 //sqlResultTextBox.Text += string.Format("{0:X}", Convert.ToInt32(dateStrings[16])) + Environment.NewLine;
                 //================================record 4=========================================================
-                sqlResultTextBox.Text += "  4" + "             " + forthRecordDateFormat.ToLocalTime().ToString() +
+                something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[21])));
+                sqlResultTextBox.Text += "  4 " +something+ "           " + forthRecordDateFormat.ToLocalTime().ToString() +
                                          "   ";
-                sqlResultTextBox.Text += "     $" + ((dateStrings[19].ToDecimal()) / 10).ToString("#,##.0") + "       ";
-                sqlResultTextBox.Text +=
-                    something = CheckString(string.Format("{0:X}", Convert.ToInt32(dateStrings[21]))) +
-                                string.Format("{0:X}", Convert.ToInt32(dateStrings[21])) + Environment.NewLine;
+                sqlResultTextBox.Text += "     $" + ((dateStrings[19].ToDecimal()) / 10).ToString("+$#,##.0;-$#,##.0;0") + "       ";
+                sqlResultTextBox.Text += string.Format("{0:X}", Convert.ToInt32(dateStrings[21])) + Environment.NewLine;
 
                  //string.Format("{0:X}", Convert.ToInt32(dateStrings[21])) + Environment.NewLine;
 
@@ -1804,7 +1804,7 @@ Convert.ToDecimal(OctValue).ToString("#,##.0"),
         {
             if (format == GetDeviceId().Substring(2,4))
             {
-                return "##";
+                return "#";
             }
             else
             {
